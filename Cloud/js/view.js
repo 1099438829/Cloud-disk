@@ -2,8 +2,8 @@
  * Created by zuo on 2017/4/22.
  */
 //生成文件
-function createGridViewFiles(data, id) {
-    var parentChilds = Incoming.getChildById(data, id);
+function createGridViewFiles(id) {
+    var parentChilds = OperationData.getChildById(id);
     var n = 0;//dd变量
     n = Math.floor($('.frame-main .module-list')[0].offsetWidth / 128);
 
@@ -42,8 +42,8 @@ function createGridViewFiles(data, id) {
     return str;
 }
 //生成文件列表
-function createListViewFiles(data, id) {
-    var parentChilds = Incoming.getChildById(data, id);
+function createListViewFiles(id) {
+    var parentChilds = OperationData.getChildById(id);
     var str = '';
     //循环child 拼接字符串
     for (var i = 0; i < parentChilds.length; i++) {
@@ -56,7 +56,7 @@ function createListViewFiles(data, id) {
                 imgInfo = 'default-small';
         }
         str += `
-            <dd _position="${i}">
+            <dd _position="${i}" data-id="${parentChilds[i].id}">
                 <span class="checkbox">
                     <span class="ico-font checksmall"></span>
                 </span>
@@ -98,7 +98,7 @@ function createListViewFiles(data, id) {
                     </div>
                 </div>
                 <div class="file-size">${parentChilds[i].type === "folder" ? '-' : yun.fileSize(parentChilds[i].fileSize)}</div>
-                <div class="ctime">${yun.format(parentChilds[i].time)}</div>
+                <div class="ctime">${$.yunTool.format(parentChilds[i].time)}</div>
             </dd>
         `
     }
@@ -125,9 +125,9 @@ function fnEmptyFolder() {
 }
 
 
-function CreateBreadCrumb(data, id) {
+function CreateBreadCrumb(id) {
     let str = '';
-    let breadCrumb = Incoming.getParentsById(data, id).reverse();
+    let breadCrumb = OperationData.getParentsById(id).reverse();
     str += `
         <li>
             <a href="javascript:;" data-deep=-1 data-id=-1>返回上一级</a>
@@ -140,7 +140,7 @@ function CreateBreadCrumb(data, id) {
         if (i === n) {
             str += `<span title="全部文件">...</span>`
         }
-        str += `<a href="javascript:;" data-deep=${i} data-id=${i}> ${breadCrumb[i].name}</a>`
+        str += `<a href="javascript:;" data-deep=${i} data-id=${breadCrumb[i].id}> ${breadCrumb[i].name}</a>`
         str += i == len - 1 ? '' : `<span class="historylistmanager-separator-gt">></span>`
     }
     str += `</li>`

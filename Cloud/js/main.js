@@ -10,9 +10,10 @@
     window.oListView = $('.frame-main .list-view-container .list-view');//列表变量
     window.oBreadCrumb = $('.frame-main .historylistmanager-history ');//面包屑
 
+    let oStatus = null;//新建文件夹或者重命名是的状态
+
     window.oFrameMain = $('.frame-main');//右侧菜单
     let oFrameMainWidth = oFrameMain[0].offsetWidth;//右侧菜单的宽度
-
 
     //缩略图和列表切换 按钮
     let listSwitch = $('.frame-main .default-dom .list-switch');
@@ -125,12 +126,13 @@
 
     //文件夹双击进入文件夹或打开文件事件委托
     gridViewContainer.on('dblclick', '.grid-view-item', fnDblclickChecked);
-    // listviewContainer.on('click', 'dd', fnFolderChecked);
-
+    listviewContainer.on('dblclick', 'dd', fnDblclickChecked);
     function fnDblclickChecked(event) {
         let id = $(this).data('id');
+        console.log(id)
         let Suffix = $(this).find('.filename').attr('title')
         let type = Suffix.lastIndexOf('.') === -1 ? 'folder' : Suffix.slice(Suffix.lastIndexOf('.') + 1);
+
         switch (type) {
             case 'folder':
                 fnEnterFolder(id, Suffix)
@@ -140,15 +142,12 @@
 
     //进入文件夹
     function fnEnterFolder(id) {
-        //let newData = Incoming.getChildById(data, id);
-        //let dataChilds = Incoming.getChildById(data, id)
-        currentData = createHtml(data, id);
-
+       currentData = createHtml(data, id);
     }
 
     //面包屑事件委托
-    oBreadCrumb.on('click', 'a', fnbreadCrumbInfo)
-    //面包屑
+    oBreadCrumb.on('click', 'a', fnbreadCrumbInfo);
+
     function fnbreadCrumbInfo(event) {
         let lastId = oBreadCrumb.find('a');
         let lid = lastId.last().data('id');
@@ -166,63 +165,88 @@
     }
 
     //新建文件夹
-    let oNewFolderBtn = $('.frame-main .bar .tools a').last();
-    oNewFolderBtn.on('click', fnNewFolder)
-
+    $('.frame-main .bar .tools a').last().on('click', fnNewFolder);
     function fnNewFolder() {
         let type = gridViewContainer.hasClass('show') ? 'grid' : 'list';
-        if (type === 'module-edit-name-grid') {
-            moduleEdite.addClass('show')
-            moduleEdite.addClass('module-edit-name-grid')
-            moduleEdite.addClass('grid-dir-large')
-
-            gridSwitch.html($.yunTool.RenderingFolder(fnGridChilds(), 'newFolder', oFrameMainWidth))//添加后渲染页面
+        if (type === 'grid') {
+            moduleEdite.addClass('show');
+            moduleEdite.addClass('module-edit-name-grid');
+            moduleEdite.addClass('grid-dir-large');
+            fnCancelNEW(fnGridChilds(), 'newFolder', oFrameMainWidth)//添加后渲染页面
         } else {
             moduleEdite.addClass('show')
             let newFolder = fnCreateFolder(type)
             oListView.prepend(newFolder)
-
         }
-
     }
 
     //取消新建文件夹
-    moduleEdite.find('.cancel').on('click', function () {
-        console.log(123)
+    moduleEdite.find('.cancel').on('click',fnCancel);
+    function fnCancel() {
         if (moduleEdite.hasClass('module-edit-name-grid')) {
-            moduleEdite.removeClass('show')
-            moduleEdite.removeClass('module-edit-name-grid')
-            moduleEdite.removeClass('grid-dir-large')
-
+            moduleEdite.removeClass('show');
+            moduleEdite.removeClass('module-edit-name-grid');
+            moduleEdite.removeClass('grid-dir-large');
+            fnCancelNEW(fnGridChilds(), '', oFrameMainWidth)//重新渲染页面
         } else {
             moduleEdite.removeClass('show');
-
+            oListView.find('dd:first').remove();
         }
-        fnCancelNEW(fnGridChilds(), oFrameMainWidth)
+    }
+    
+    
+    
+    //缩略模式取消文件夹 重新计算
+    function fnCancelNEW(childs, type, Width) {
+        oGridView.html('');
+        let ele = $.yunTool.RenderingFolder(childs, type, Width);
+        for (let i = 0; i < ele.length; i++) {
+            oGridView.append(ele[i])
+        }
+    }
+
+    //确定新建文件夹
+    moduleEdite.find('.sure').on('click', function () {
+        let value = $(this).prev().val();
+        let id = fnCurrentViewId();
+        //判断名字是否重复了
+        if ($.yunTool.isNameRepetition(currentData, value)) {
+            console.log('重复了')
+        } else {
+            OperationData.addFoderData(OperationData.AddFolderInfo(id, value),id)
+            currentData = createHtml(id);
+            fnCancel()//取消新建文件夹状态
+        }
+
+
     });
 
-    function fnCancelNEW(childs, width) {
 
-        gridSwitch.html($.yunTool.RenderingFolder(childs, '', oFrameMainWidth))
 
+    //获取到当前视图的id
+    function fnCurrentViewId() {
+        let ells = oBreadCrumb.find('a');
+        if (!ells.length) {
+            return 0;
+        }
+        return ells.last().data('id');
     }
 
     //获取缩略图下面所有的文件元素
     function fnGridChilds() {
         return gridViewContainer.find('.grid-view-item');
     }
+
 })(jQuery);
 
 
-//数据的方法
-let Incoming = new ManipulationData()
 
-var currentData = createHtml(data, 0);
+window.currentData = createHtml(0);
 
 //渲染页面
-function createHtml(data, id) {
-    let current = fnCreateGridViewFile(data, id);//缩略图模式
-    fnCreateListViewFile(data, id)
-    fnCreateBreadCrumbInfo(data, id)
+function createHtml(id) {
+    let current = fnCreateGridViewFile(id);//缩略图模式
+    fnCreateListViewFile(id)
+    fnCreateBreadCrumbInfo(id)
     return current;
 }

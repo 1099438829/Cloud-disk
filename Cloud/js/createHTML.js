@@ -5,10 +5,10 @@
 
 
 //生成文件夹 - 缩略图
-function fnCreateGridViewFile(data, id) {
+function fnCreateGridViewFile(id) {
     // console.log(oGridView)
-    var children = Incoming.getChildById(data, id);
-    var htm = createGridViewFiles(data, id);
+    var children = OperationData.getChildById(id);
+    var htm = createGridViewFiles(id);
     if (htm) {
         oGridView.html(htm)
     } else {
@@ -17,8 +17,8 @@ function fnCreateGridViewFile(data, id) {
     return children;
 }
 //生成文件夹 - 缩略图
-function fnCreateListViewFile(data, id) {
-    var htm = createListViewFiles(data, id);
+function fnCreateListViewFile(id) {
+    var htm = createListViewFiles(id);
     if (htm) {
         oListView.html(htm)
     } else {
@@ -26,9 +26,9 @@ function fnCreateListViewFile(data, id) {
     }
 }
 //生成文件夹 - 的面包屑
-function fnCreateBreadCrumbInfo(data, id) {
+function fnCreateBreadCrumbInfo(id) {
     if (id !== 0) {
-        var htm = CreateBreadCrumb(data, id);
+        var htm = CreateBreadCrumb(id);
         if (htm) {
             if (!oBreadCrumb.hasClass('active')){
                 oBreadCrumb.addClass('active')

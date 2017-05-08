@@ -8,12 +8,46 @@
 
         }
 
+        isNewFolder() {
+            if (oStatus) {
+                oStatus.focus();
+                return true;
+            }
+            return false;
+        }
+
+        //名字重复后加后缀
+        newFolderName(eles, name) {
+            let re2 = /\(\d+\)$/;
+            let gz = '^' + name.replace(re2, function ($0, $1, $2) {
+                    return $0.replace(/^\(|\)$/g, function ($0) {
+                        return '\\' + $0;
+                    })
+                }) + '$';
+            let re1 = new RegExp(gz);
+            for (let i = 0, len = eles.length; i < len; i++) {
+                if (re1.test(eles[i].name || eles[i])) {
+                    if (re2.test(name)) {
+                        let newN = name.replace(re2, function ($0) {
+                            return $0.replace(/\d+/, function ($0) {
+                                return $0 * 1 + 1
+                            })
+                        });
+                        name = this.newFolderName(eles, newN);
+                    } else {
+                        name = this.newFolderName(eles, name + '(1)');
+                    }
+                    break;
+                }
+            }
+            return name;
+        }
 
         //判断名字是否重复
         isNameRepetition(childs, name) {
             let isRepetition = false;
-            for (let i = 0 , len = childs.length; i < len; i++) {
-                if(childs[i].name === name){
+            for (let i = 0, len = childs.length; i < len; i++) {
+                if (childs[i].name === name) {
                     isRepetition = true;
                     break;
                 }

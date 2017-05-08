@@ -1,3 +1,8 @@
+.frame-all{
+    position: absolute;
+    width: 100%;
+    height:100%;
+}
 /*左侧栏-------------------------------------------------------------*/
 .frame-left {
     position: absolute;
@@ -354,10 +359,16 @@
     float: left;
     height: 34px;
     border: 1px solid #3b8cff;
-    padding: 0 10px;
+    /*padding: 0 10px;*/
     margin-right: -1px;
     color: #3b8cff;
 }
+
+.frame-main .module-toolbar .default-dom .bar .button-box-mark .g-button.g-disabled{
+    color: #9DC5FF;
+    _border:1px solid #9DC5FF;
+}
+
 
 .frame-main .module-toolbar .default-dom .bar .button-box-mark .g-button:nth-of-type(1) {
     border-radius: 5px 0 0 5px;
@@ -489,6 +500,7 @@
     line-height: 36px;
     font-size: 12px;
 }
+
 
 .frame-main .list-view-header .list-header-operatearea {
     float: left;
@@ -631,13 +643,16 @@
     margin: 5px;
     text-align: center;
 }
+.frame-main  .grid-view-item .file-name.rename{
+
+}
 
 .frame-main .grid-view-item .filename {
     font-size: 12px;
     display: block;
 }
 
-.frame-main .grid-view-item .filename.off {
+.frame-main .grid-view-item .file-name.rename .filename{
     display: none;
 }
 
@@ -646,6 +661,9 @@
 }
 
 /*文件名字修改框*/
+.frame-main .grid-view-item .file-name.rename .filename-info{
+    display: block;
+}
 .frame-main .grid-view-item .filename-info {
     position: absolute;
     left: -5px;
@@ -654,11 +672,9 @@
     height: 24px;
     z-index: 999;
     display: none;
+
 }
 
-.frame-main .grid-view-item .filename-info.on {
-    display: block;
-}
 
 .frame-main .grid-view-item .filename-input {
     float: left;
@@ -667,7 +683,8 @@
     margin: 1px;
     border: 1px solid #a6c9fc;
     box-sizing: border-box;
-
+    font-size: 12px;
+    padding-left: 5px;
 }
 
 .frame-main .grid-view-item .filename-confirm,
@@ -678,11 +695,11 @@
     margin: 1px;
     border: 1px solid #cce0fb;
     color: #5b9ffe;
-    font-size: 16px;
     line-height: 22px;
     background: #f1f5fa;
     box-sizing: border-box;
     cursor: pointer;
+    font-size: 12px;
 }
 
 .frame-main .grid-view-item .checkbox {
@@ -792,15 +809,59 @@
     overflow: hidden;
 }
 
-.frame-main .list-view .file-name .text .filename {
+.frame-main .list-view .file-name .filename {
     font-size: 12px;
 }
 
-.frame-main .list-view .file-name .text .filename:hover {
+.frame-main .list-view .file-name .filename:hover {
     color: #4b95ff;
 }
 
-/*右侧列表hover的菜单栏*/
+.frame-main .list-view .file-name .filename-info{
+    display:none;
+    position: absolute;
+    left:0px;
+    top:0;
+}
+
+.frame-main .list-view .file-name.rename .filename-info{
+    display: block;
+    position:absolute;
+    left:80px;
+    top:10px;
+    text-indent: 0;
+}
+
+.frame-main .list-view .filename-input{
+    float: left;
+    width:184px;
+    height:18px;
+    border:1px solid #3b8cff;
+    background-color:#fff;
+    padding-left:5px;
+    margin-right: 2px;
+    font-size: 12px;
+}
+
+.frame-main .list-view .filename-confirm,
+.frame-main .list-view .filename-cancel {
+    float: left;
+    width: 22px;
+    height: 22px;
+    margin: 1px;
+    border: 1px solid #cce0fb;
+    color: #5b9ffe;
+    line-height: 22px;
+    background: #f1f5fa;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+}
+
+
+
+    /*右侧列表hover的菜单栏*/
 .frame-main .list-view .operate {
     position: absolute;
     top: 0;
@@ -821,8 +882,9 @@
 }
 
 .frame-main .list-view .operate .g-button {
-    margin: 0 0 0 12px;
-
+    margin: 0 0 0 0;
+    border:none;
+    padding:0;
 }
 
 .frame-main .list-view .operate .g-button-right {
@@ -830,6 +892,8 @@
     font-size: 0;
     width: 22px;
     height: 44px;
+    padding: 0;
+    margin-right:5px;
 }
 
 .frame-main .list-view .operate .icon-share {

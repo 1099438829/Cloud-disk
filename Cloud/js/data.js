@@ -9,6 +9,7 @@ var data = [
         "name": "全部文件",
         "fileSize":10,
         "type": "root",
+        "del":false,
         "arrange":"dateChanged",
         "child": [
             {
@@ -20,6 +21,7 @@ var data = [
                 "fileSize":5,
                 "type": "folder",
                 "cover":"kong",
+                "del":false,
                 "child": [
                     {
                         "id": 3,
@@ -30,19 +32,33 @@ var data = [
                         "fileSize":10,
                         "type": "folder",
                         "cover":"kong",
+                        "del":false,
                         "child": []
                     }
                 ]
             },
             {
                 "id": 2,
-                "pId": 0,
-                "name": "我的视频",
+                "pId": 1,
+                "name": "小电影",
                 "checked": false,
-                "time": 1490531555520,
-                "fileSize":20,
+                "time": 1490531555720,
+                "fileSize":10,
                 "type": "folder",
                 "cover":"kong",
+                "del":false,
+                "child": []
+            },
+            {
+                "id": 4,
+                "pId": 1,
+                "name": "x",
+                "checked": false,
+                "time": 1490531555720,
+                "fileSize":10,
+                "type": "folder",
+                "cover":"kong",
+                "del":false,
                 "child": []
             }
         ]

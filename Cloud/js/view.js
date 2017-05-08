@@ -6,11 +6,10 @@ function createGridViewFiles(id) {
     var parentChilds = OperationData.getChildById(id);
     var n = 0;//dd变量
     n = Math.floor($('.frame-main .module-list')[0].offsetWidth / 128);
-
     var str = '';
     //循环child 拼接字符串
     for (var i = 0; i < parentChilds.length; i++) {
-        ////console.log(parentChilds[i].type)
+        if(parentChilds[i].del) continue;
         var imgInfo = ''
         switch (parentChilds[i].type) {
             case 'folder':
@@ -29,8 +28,8 @@ function createGridViewFiles(id) {
                         </a>
                         <div class="filename-info">
                             <input type="text" class="filename-input" >
-                            <span class="filename-confirm ico-font">X</span>
-                            <span class="filename-cancel ico-font">Y</span>
+                            <span class="filename-confirm ico-font">&#xE937;</span>
+                            <span class="filename-cancel ico-font">&#xE93A;</span>
                         </div>
                     </div>
                     <div class="checkbox">
@@ -47,7 +46,8 @@ function createListViewFiles(id) {
     var str = '';
     //循环child 拼接字符串
     for (var i = 0; i < parentChilds.length; i++) {
-        var imgInfo = ''
+        if(parentChilds[i].del) continue;
+        var imgInfo = '';
         switch (parentChilds[i].type) {
             case 'folder':
                 imgInfo = 'dir-small';
@@ -64,6 +64,11 @@ function createListViewFiles(id) {
                 <div class="file-name">
                     <div class="text">
                         <a  class="filename" href="javascript:void(0);" title="${parentChilds[i].type === 'folder' ? parentChilds[i].name : (parentChilds[i].name + '.' + parentChilds[i].type)}" >${parentChilds[i].name}</a>
+                        <div class="filename-info">
+                            <input type="text" class="filename-input">
+                            <span class="filename-confirm ico-font">&#xE937;</span>
+                            <span class="filename-cancel ico-font">&#xE93A;</span>
+                        </div>
                     </div>
                     <!--列表hover菜单栏-->
                     <div class="operate">

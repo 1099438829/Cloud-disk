@@ -1,18 +1,10 @@
 /**
  * Created by zuo on 2017/4/22.
  */
-class Darg {
-    constructor() {
-
-    }
-}
-
-
-
 //数据的方法
 ;(function () {
     class ManipulationData {
-        constructor(data){
+        constructor(data) {
             this.data = data;
         }
 
@@ -22,7 +14,7 @@ class Darg {
         }
 
         //获取到指定id的数据???
-        getDataById(data,id) {
+        getDataById(data, id) {
             var item = null;
             for (var i = 0; i < data.length; i++) {
                 //因为id没有重复的 所以 data[i].id =id 时候就找到了
@@ -51,19 +43,19 @@ class Darg {
             if (targetData && targetData.child) {
                 return targetData.child;
             }
+            return [];
         }
 
 
         //获取到指定ID的所有父级包括自己
         getParentsById(id) {
-
             var items = [];//存放父级的数组
             //现在的id
             var current = this.getDataById(this.data, id);
             //判断如果现在的id存在 就加到数组 并把自身的pId 传到 函数递归
             if (current) {
                 items.push(current);
-                items = items.concat(this.getParentsById(this.data, current.pId));
+                items = items.concat(this.getParentsById(current.pId));
             }
 
             return items;
@@ -109,10 +101,34 @@ class Darg {
         }
 
         addFoderData(ObjectInfo, id) {
-            console.log(id)
-            let dataIdInfo = this.getDataById(this.data,id);
+            let dataIdInfo = this.getDataById(this.data, id);
             dataIdInfo.child.unshift(ObjectInfo)
         }
+
+        //删除文件夹
+        delFoderData(ids, curId) {
+            let childs = this.getChildById(curId);
+            for (let i = 0; i < ids.length; i++) {
+                for (let j = 0; j < childs.length; j++) {
+
+                    if (childs[j].id === ids[i]) {
+                        childs.splice(j, 1);
+                        j--;
+                    }
+                }
+            }
+           return true;
+        }
+
+        //
+        renameFolder(val,id){
+            let reFolder =  this.getDataById(this.data,id)
+            reFolder.name = val;
+            return true;
+        }
+
+
+
 
 
     }

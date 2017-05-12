@@ -20,7 +20,7 @@ function createGridViewFiles(id) {
         }
         if (i % n === 0) str += `<dd>`;
         str +=`               
-          <div class="grid-view-item" data-id="${parentChilds[i].id}" _position="${i}">
+          <div class="grid-view-item" data-id="${parentChilds[i].id}" data-pId="${parentChilds[i].pId}" _position="${i}">
                <div class="fileicon ${imgInfo}"  ></div>
                     <div class="file-name">
                         <a  class="filename" href="javascript:void(0);" title="${parentChilds[i].type === 'folder' ? parentChilds[i].name : (parentChilds[i].name + '.' + parentChilds[i].type)}" >
@@ -56,7 +56,7 @@ function createListViewFiles(id) {
                 imgInfo = 'default-small';
         }
         str += `
-            <dd _position="${i}" data-id="${parentChilds[i].id}">
+            <dd _position="${i}" data-id="${parentChilds[i].id}" data-pId="${parentChilds[i].pId}">
                 <span class="checkbox">
                     <span class="ico-font checksmall"></span>
                 </span>

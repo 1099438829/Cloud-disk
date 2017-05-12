@@ -382,9 +382,150 @@
     //--------------------------------------------------------------------------------------
     //移动到
     $('.frame-main .button-box-mark a').eq(5).on('click', fnMoveFolder);
-
     function fnMoveFolder() {
-        console.log('移动')
+        let folderInfo = fnGridChilds().filter(function (index, item) {
+            return $(item).hasClass('item-active')
+        });
+
+        if (folderInfo.length) {
+            fnMoveFolderMessage(folderInfo)
+        } else {
+            return false;
+        }
+
+    }
+
+    function fnMoveFolderMessage(folderInfo) {
+        let fileTree = `
+                <div class="file-tree-container">
+                   <ul class="treeview treeview-content ">
+                       ${fnMoveFolderMessageHtml(data, 0)}
+                   </ul>
+                </div>
+                 `;
+        let moveTip = $.Message({
+            id: 'fileTreeDialog',
+            title: '移动文件',
+            content: fileTree,
+            okFun: function () {
+                fnMoveFolderConfirm(this)
+            }
+        });
+        fnMoveFolderEvent(moveTip)
+    }
+
+    function fnMoveFolderEvent(moveTip) {
+        //添加 列表选中事件
+        moveTip.dialogBody.on('click', '.treeview-node', function () {
+            $(this).trigger('checked', this);
+        });
+
+        moveTip.dialogBody.on('checked', function (ev, ele) {
+            moveTip.prv = moveTip.prv || moveTip.dialogBody.find('.treeview-node:first');
+            if (moveTip.prv[0] === ele) {
+                if ($(ele).hasClass('treeview-root')) {
+                    if (!$(ele).hasClass('treenode-empty')) $(ele).removeClass('treeview-root')
+                    $(ele).find('em').removeClass('minus');
+                    $(ele).next().addClass('treeview-collapse')
+                } else {
+                    if (!$(ele).hasClass('treenode-empty')) $(ele).addClass('treeview-root')
+                    $(ele).find('em').addClass('minus')
+                    $(ele).next().removeClass('treeview-collapse')
+                }
+            } else {
+                $(ele).addClass('treeview-node-on');
+                moveTip.prv.removeClass('treeview-node-on');
+                if (!$(ele).hasClass('treenode-empty')) {
+                    $(ele).addClass('treeview-root')
+                    $(ele).find('em').addClass('minus')
+                    $(ele).next().removeClass('treeview-collapse')
+                }
+                moveTip.prv = $(ele);
+            }
+        });
+
+        moveTip.dialogBody.on('mouseenter', '.treeview-node', function (event) {
+            if (!$(this).hasClass('treeview-node-on')) {
+                $(this).addClass('treeview-node-hover')
+            }
+        });
+
+        moveTip.dialogBody.on('mouseleave', '.treeview-node', function (event) {
+            if ($(this).hasClass('treeview-node-hover')) {
+                $(this).removeClass('treeview-node-hover')
+            }
+        });
+    }
+
+    function fnMoveFolderConfirm(ele) {
+        let id = ele.prv ? ele.prv.data('id') : 0;
+        let childsInfo = fnGridChilds().filter(function (index, item) {
+            return $(item).hasClass('item-active')
+        }).map(function (index, item) {
+            return {
+                id: $(item).data('id'),
+                name: $(item).find('.filename').html().trim(),
+                pId: $(item).data('pid')
+            }
+        });
+
+        let isSeif = OperationData.isFolderseif(id, childsInfo);
+        if (isSeif) {
+            fnTip(isSeif);
+            return false;
+        }
+
+        let IsDuplicationName = OperationData.IsDuplicationName(id, childsInfo);
+        if (IsDuplicationName) {
+            ele.dialog.remove();
+            $.Message({
+                title: '温馨提示',
+                content: `
+                            <div style="text-align:center;padding:40px 22px 22px 22px;">
+                                检测到本文件夹下以下文件名字相同:
+                                <br/>
+                                ${fnMoveFolderRename(IsDuplicationName)}
+                            </div>`,
+                okValue: '保留两个',
+                okFun: function () {
+                    OperationData.fnMoveRepetitionName(IsDuplicationName, childsInfo, fnCurrentViewId());
+                    this.dialog.remove();
+                }
+            })
+        }
+    }
+
+
+    function fnMoveFolderRename(IsDuplicationName) {
+        let str = '';
+        for (let i = 0; i < IsDuplicationName.isRepetition.length; i++) {
+            str += IsDuplicationName.isRepetition[i] + '  ';
+        }
+        return str;
+    }
+
+
+    function fnMoveFolderMessageHtml(data, num) {
+        let str = '';
+        for (var i = 0; i < data.length; i++) {
+            str += `<li>
+                        <div class="treeview-node ${!data[i].child.length ? 'treenode-empty' : ''}${data[i].id === 0 ? 'treeview-node-on _minus treeview-root' : ''}"  data-id = ${data[i].id}  style="padding-left:${num}px">
+                            <span class="treeview-node-handler">
+                                <em class="b-in-blk plus icon-operate ${data[i].id === 0 ? 'minus' : ''}"></em>
+                                <dfn class="b-in-blk treeview-ic"></dfn>
+                                <span class="treeview-txt" >${data[i].name}</span>
+                            </span>
+                        </div>`;
+            if (data[i].child.length) {
+                str += ` 
+                        <ul class="treeview treeview-root-content treeview-content ${num >= 15 ? 'treeview-collapse' : ''}" >
+                            ${fnMoveFolderMessageHtml(data[i].child, num + 15)}
+                        </ul>`;
+            }
+
+            str += `</li>`;
+        }
+        return str;
     }
 
 
@@ -415,7 +556,7 @@
     function fnNewFolderAdd(id, value) {
         OperationData.addFoderData(OperationData.AddFolderInfo(id, value), id)
         currentData = createHtml(id);
-        fnCancel()//取消新建文件夹状态
+        fnCancel() //取消新建文件夹状态
         fnTip('新建文件夹成功')
     }
 

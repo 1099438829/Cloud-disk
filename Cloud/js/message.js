@@ -3,13 +3,13 @@
  */
 (function ($) {
     console.log()
-    class Message  extends $.Drag{
+    class Message extends $.Drag {
         constructor(options) {
             super();
             this.newOptions = {
                 id: 'confirm',
                 className: 'dialog dialog-confirm dialog-gray',
-                style: {display: 'block', width: 400, visibility: 'visible',zIndex:54},
+                style: {display: 'block', width: 400, visibility: 'visible', zIndex: 54},
                 title: '删除文件',
                 content: '<div style="text-align:center;padding:40px 22px 22px 22px;">确认要把所选文件删除吗？</div>',
                 okValue: '确定',
@@ -29,14 +29,14 @@
 
         _init() {
             this.dialog = this._createDialog();
+            this.dialogBody = this.dialog.find('.dialog-body');
             this.dialog.appendTo('body');
             this.dialog.css({
                 top: ($(window).height() - this.dialog.height()) / 2,
-                left:($(window).width() - this.dialog.width()) / 2,
+                left: ($(window).width() - this.dialog.width()) / 2,
             });
             this._addEvent();
             this.dragInit(this.dialog);
-            console.log()
         }
 
         // 组件的模板
@@ -87,14 +87,13 @@
 
         _addEvent() {
             // this -> 实例
-            this.dialog.find('.dialog-footer .g-button-blue-large').on('click',this.newOptions.okFun.bind(this));
-            this.dialog.find('.dialog-footer .g-button-large').on('click',this.newOptions.cancelFun.bind(this));
+            this.dialog.find('.dialog-footer .g-button-blue-large').on('click', this.newOptions.okFun.bind(this));
+            this.dialog.find('.dialog-footer .g-button-large').on('click', this.newOptions.cancelFun.bind(this));
         }
 
     }
     $.Message = function (options) {
-        new Message(options)
-
+       return new Message(options)
     };
 
 

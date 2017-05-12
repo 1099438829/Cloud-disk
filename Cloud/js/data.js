@@ -5,7 +5,7 @@ var data = [
     {
         "id": 0,
         "pId": null,
-        "maxId": 3,
+        "maxId": 6,
         "name": "全部文件",
         "fileSize":10,
         "type": "root",
@@ -26,7 +26,19 @@ var data = [
                     {
                         "id": 3,
                         "pId": 1,
-                        "name": "岛国某某小电影",
+                        "name": "xx",
+                        "checked": false,
+                        "time": 1490531555720,
+                        "fileSize":10,
+                        "type": "folder",
+                        "cover":"kong",
+                        "del":false,
+                        "child": []
+                    },
+                    {
+                        "id": 5,
+                        "pId": 1,
+                        "name": "x",
                         "checked": false,
                         "time": 1490531555720,
                         "fileSize":10,
@@ -39,7 +51,7 @@ var data = [
             },
             {
                 "id": 2,
-                "pId": 1,
+                "pId": 0,
                 "name": "小电影",
                 "checked": false,
                 "time": 1490531555720,
@@ -51,7 +63,19 @@ var data = [
             },
             {
                 "id": 4,
-                "pId": 1,
+                "pId": 0,
+                "name": "xx",
+                "checked": false,
+                "time": 1490531555720,
+                "fileSize":10,
+                "type": "folder",
+                "cover":"kong",
+                "del":false,
+                "child": []
+            },
+            {
+                "id": 6,
+                "pId": 0,
                 "name": "x",
                 "checked": false,
                 "time": 1490531555720,

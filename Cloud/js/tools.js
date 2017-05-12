@@ -117,19 +117,73 @@
                     }
                 }
             }
-           return true;
+            return true;
         }
 
-        //
-        renameFolder(val,id){
-            let reFolder =  this.getDataById(this.data,id)
+
+        renameFolder(val, id) {
+            let reFolder = this.getDataById(this.data, id)
             reFolder.name = val;
             return true;
         }
 
 
+        isFolderseif(id, folderInfo) {//判断是不是自己包括自己
+            let subset = false;
+            if (folderInfo[0].pId == id) {//它的父级
+                return subset = '移动的位置和目标位置相同';
+            }
 
+            for (let i = 0; i < folderInfo.length; i++) {//它自己
+                if (folderInfo[i].id == id) {
+                    subset = true;
+                    break;
+                }
+            }
+            if (subset) return '移动到的位置是自己';
 
+            let parents = this.getParentsById(id);
+            for (let i = 0; i < folderInfo.length; i++) { //它子集
+                for (let j = 0; j < parents.length; j++) {
+                    if (folderInfo[i].id == parents[j].id) {
+                        subset = '移动到的位置是自己的子集';
+                        break;
+                    }
+                }
+                if (subset) break;
+            }
+
+            return subset;
+        }
+
+        IsDuplicationName(id, fonlderInfo) {//名字重复
+            let childs = this.getChildById(id);
+            let isRepetition = [];
+            for (let i = 0, len = childs.length; i < len; i++) {
+                for (let j = 0; j < fonlderInfo.length; j++) {
+                    if (childs[i].name === fonlderInfo[j].name) {
+                        isRepetition.push(fonlderInfo[j].name)
+                        break;
+                    }
+                }
+            }
+            if (isRepetition.length === 0) return false;
+            return {
+                isRepetition,
+                childs
+            };
+        }
+
+        fnMoveRepetitionName(duplicationName, childsInfo,curId) {//剪切文件后名字重复
+            console.log(duplicationName, childsInfo,curId)
+             
+            for (let i = 0; i < childsInfo.length; i++) {
+                for (let j = 0; j < duplicationName.legnth; j++) {
+
+                }
+            }
+
+        }
 
     }
     window.OperationData = new ManipulationData(data)

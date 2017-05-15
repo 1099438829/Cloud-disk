@@ -167,22 +167,29 @@
                     }
                 }
             }
+            console.log(123)
             if (isRepetition.length === 0) return false;
+
             return {
                 isRepetition,
                 childs
             };
         }
 
-        fnMoveRepetitionName(duplicationName, childsInfo,curId) {//剪切文件后名字重复
-            console.log(duplicationName, childsInfo,curId)
-             
+        moveRepetitionName(childsInfo, curId, targetId) {//剪切文件后名字重复
+            let curChilds = this.getChildById(curId);
+            let targetChilds = this.getChildById(targetId);
             for (let i = 0; i < childsInfo.length; i++) {
-                for (let j = 0; j < duplicationName.legnth; j++) {
-
+                for (let j = 0; j < curChilds.length; j++) {
+                    if (childsInfo[i].id === curChilds[j].id) {
+                        curChilds[j].name = childsInfo[i].name;
+                        curChilds[j].pId = childsInfo[i].pId;
+                        targetChilds.push(curChilds.splice(j,1)[0]);
+                        break;
+                    }
                 }
             }
-
+            return true;
         }
 
     }

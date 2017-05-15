@@ -104,6 +104,37 @@
             return num > 1024 ? Number.parseFloat(Number.parseFloat(num).toFixed(1)) + 'M' : num + 'KB';
         }
 
+        //--------碰撞检测---------------------
+        duang(current, target) {
+            let curTop = this.rect(current, 'top'), curRight = this.rect(current, 'right'),
+                curBottom = this.rect(current, 'bottom'), curLeft = this.rect(current, 'left');
+            let tarTop = this.rect(target, 'top'), tarRight = this.rect(target, 'right'),
+                tarBottom = this.rect(target, 'bottom'), tarLeft = this.rect(target, 'left');
+            if (curTop < tarBottom && curRight > tarLeft && curBottom > tarTop && curLeft < tarRight) {
+                return true;
+            }
+            return false;
+        };
+
+        //--------获取元素的位置-------------
+        rect(obj, type) {
+            let num = obj.getBoundingClientRect();
+            switch (type) {
+                case 'top':
+                    return num.top;
+                    break;
+                case 'right':
+                    return num.right;
+                    break;
+                case 'bottom':
+                    return num.bottom;
+                    break;
+                case 'left':
+                    return num.left;
+                    break;
+            }
+        };
+
 
     }
     $.yunTool = new yunFolder();

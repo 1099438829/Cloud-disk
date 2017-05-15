@@ -30,16 +30,22 @@ function fnCreateBreadCrumbInfo(id) {
     if (id !== 0) {
         var htm = CreateBreadCrumb(id);
         if (htm) {
-            if (!oBreadCrumb.hasClass('active')){
+            if (!oBreadCrumb.hasClass('active')) {
                 oBreadCrumb.addClass('active')
             }
             oBreadCrumb.html(htm)
         }
     } else {
-        if (oBreadCrumb.hasClass('active')){
+        if (oBreadCrumb.hasClass('active')) {
             oBreadCrumb.removeClass('active')
         }
     }
     window.currentId = id;
 }
 
+function fnCreateContentMenu() {
+    let contentMenu = fnCreateContentMenuHTML(dataContentMenu[0]);
+    let folderMenu = fnCreateContentMenuHTML(dataContentMenu[1]);
+    $('#contentMenu').html(contentMenu);
+    $('#folderMenu').html(folderMenu);
+}

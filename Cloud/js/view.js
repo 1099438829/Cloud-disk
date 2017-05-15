@@ -3,13 +3,14 @@
  */
 //生成文件
 function createGridViewFiles(id) {
-    var parentChilds = OperationData.getChildById(id);
-    var n = 0;//dd变量
+    let parentChilds = tabSotrType(id);
+    let n = 0;//dd变量
     n = Math.floor($('.frame-main .module-list')[0].offsetWidth / 128);
-    var str = '';
+
+    let str = '';
     //循环child 拼接字符串
     for (var i = 0; i < parentChilds.length; i++) {
-        if(parentChilds[i].del) continue;
+        if (parentChilds[i].del) continue;
         var imgInfo = ''
         switch (parentChilds[i].type) {
             case 'folder':
@@ -19,7 +20,7 @@ function createGridViewFiles(id) {
                 imgInfo = 'default-large';
         }
         if (i % n === 0) str += `<dd>`;
-        str +=`               
+        str += `               
           <div class="grid-view-item" data-id="${parentChilds[i].id}" data-pId="${parentChilds[i].pId}" _position="${i}">
                <div class="fileicon ${imgInfo}"  ></div>
                     <div class="file-name">
@@ -42,11 +43,11 @@ function createGridViewFiles(id) {
 }
 //生成文件列表
 function createListViewFiles(id) {
-    var parentChilds = OperationData.getChildById(id);
-    var str = '';
+    let parentChilds = tabSotrType(id);
+    let str = '';
     //循环child 拼接字符串
     for (var i = 0; i < parentChilds.length; i++) {
-        if(parentChilds[i].del) continue;
+        if (parentChilds[i].del) continue;
         var imgInfo = '';
         switch (parentChilds[i].type) {
             case 'folder':
@@ -205,4 +206,57 @@ function fnCreateFolder() {
     return item;
 }
 
+//创建一个拖拽的空白文件
+function fnCreateDragEmpty(num, url) {
+    url = url ? url : './img/Folder_54.png';
+    let emptyDrag = $('<div id="empty-drag"></div>');
+    let _html = `
+            <div class="empty-drag-img" style="background-image: url(${url})"></div>
+            <span class="empty-drag-num">${num}</span>
+            `
+    emptyDrag.html(_html)
 
+    return emptyDrag;
+}
+fnCreateDragEmpty()
+
+//生成鼠标右键菜单
+function fnCreateContentMenuHTML(dataInfo, zIndex) {
+    zIndex = !zIndex ? 100 : zIndex;
+    let str = ` <ul class="list" style="z-index: ${zIndex}; left: 0px; top: 0px;">`;
+    for (let i = 0; i < dataInfo.item.length; i++) {
+        str += `
+       
+                <li class="has-more ${dataInfo.item[i].item.length ? 'arrowicon' : '' }" data-title="${dataInfo.item[i].name}" style="z-index:${zIndex + 2};">
+                    ${dataInfo.item[i].name}
+                    ${!dataInfo.item[i].item.length ? '' : fnCreateContentMenuHTML(dataInfo.item[i], zIndex + 10)}
+                </li>               
+           
+            `
+    }
+    str += ' </ul>';
+    return str;
+}
+
+
+function tabSotrType(id) {
+    let parentChilds = OperationData.getChildById(id);
+    switch (state.arrangementMode) {
+        case 'name':
+            parentChilds.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
+            break;
+        case 'date':
+            parentChilds.sort(function (a, b) {
+                return a.time - b.time;
+            });
+            break;
+        case 'size':
+            parentChilds.sort(function (a, b) {
+                return a.fileSize - b.fileSize;
+            });
+            break;
+    }
+    return parentChilds;
+}

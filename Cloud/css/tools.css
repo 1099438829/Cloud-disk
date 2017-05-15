@@ -24,6 +24,10 @@ a {
     float: right;
 }
 
+.item-hover-color {
+    background-color: #f1f5fa;
+}
+
 /*----------------*/
 .icofont {
     font-family: 'icomoon' !important;
@@ -31,12 +35,14 @@ a {
     text-decoration: none;
 }
 
-.hide{
+.hide {
     display: none !important;
 }
-.show{
+
+.show {
     display: block !important;
 }
+
 @font-face {
     font-family: 'Conv-yunfont';
     src: url('fonts/yunfont .eot');

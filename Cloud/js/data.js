@@ -61,30 +61,7 @@ var data = [
                 "del":false,
                 "child": []
             },
-            {
-                "id": 4,
-                "pId": 0,
-                "name": "xx",
-                "checked": false,
-                "time": 149053155534,
-                "fileSize":10,
-                "type": "folder",
-                "cover":"kong",
-                "del":false,
-                "child": []
-            },
-            {
-                "id": 6,
-                "pId": 0,
-                "name": "x",
-                "checked": false,
-                "time": 149053155523,
-                "fileSize":3,
-                "type": "folder",
-                "cover":"kong",
-                "del":false,
-                "child": []
-            }
+
         ]
     }
 ];

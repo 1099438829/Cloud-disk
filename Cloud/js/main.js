@@ -99,7 +99,7 @@
     let moduleEdite = $('.module-edit-name');
 
     function fnFolderAllChecked() {
-        console.log(this)
+
         if (!$(this).hasClass('all-folder')) {
             $('.check-icon').addClass('all-folder');
         } else {
@@ -183,7 +183,6 @@
     gridViewContainer.on('dblclick', '.grid-view-item', fnDblclickChecked);
     listviewContainer.on('dblclick', 'dd', fnDblclickChecked);
     function fnDblclickChecked(event) {
-        console.log(this)
         let id = $(this).data('id');
         let Suffix = $(this).find('.filename').attr('title')
         let type = Suffix.lastIndexOf('.') === -1 ? 'folder' : Suffix.slice(Suffix.lastIndexOf('.') + 1);
@@ -206,14 +205,14 @@
     function fnbreadCrumbInfo(event) {
         let lastId = oBreadCrumb.find('a');
         let lid = lastId.last().data('id');
-        let pid = lastId.last().prev().data('id')
+        let pid = lastId.last().prev().prev().data('id')
         let deep = $(this).data('deep');
         let id = $(this).data('id');
-        let prevId = lid + deep;
-        if (deep === -1 && id !== 0) {
-            currentData = createHtml(prevId);
-        } else {
+
+        if (deep >= 0  && id >= 0) {
             currentData = createHtml(id);
+        } else {
+            currentData = createHtml(pid);
         }
     }
 
@@ -301,6 +300,7 @@
                 okFun: function () {
                     fnDleFolderAffirm(idInfo);
                     this.dialog.remove();
+                    $('#module-shade').css({display:'none'});
                 }
             });
         }
@@ -535,6 +535,7 @@
                 okFun: function () {
                     fnMoveRepetitionName(IsDuplicationName, childsInfo);
                     this.dialog.remove();
+                    $('#module-shade').css({display:'none'});
                 }
             })
         } else {
@@ -546,6 +547,7 @@
                 if (ele) ele.dialog.remove();
                 currentData = createHtml(curId);
                 fnTip('移动文件成功')
+                $('#module-shade').css({display:'none'});
             }
         }
     }
@@ -699,7 +701,8 @@
     function fnDblEmptyMenu(ev, _this) {
         ev.preventDefault();
         ev.stopPropagation();
-        fnCancelFolderMenu()
+        fnCancelFolderMenu();
+        fnCancelAllChecked();//选中
         let tarId = ev.originalEvent.target.className;
         let tarTag = ev.originalEvent.target.nodeName.toUpperCase();
         if (tarId === 'frame-main' || tarTag === 'DD') {
@@ -751,8 +754,6 @@
         ev.stopPropagation();
         fnCancelFolderMenu(); //取消右键菜单
         let key = $(this).data('title');
-        //console.log(key)
-        //console.log(ev.data.type)
         if (ev.data.type === 'folderMenu') {
             switch (key) {
                 case '打开':
@@ -1076,11 +1077,16 @@
         let current = fnCreateGridViewFile(id);//缩略图模式
         fnCreateListViewFile(id)
         fnCreateBreadCrumbInfo(id)
-        fnCreateContentMenu()
+        fnCreateContentMenu();
+        fileNum(current.length);
         return current;
     }
 
     window.currentData = createHtml(0);
+    //当前视图共多少文件
+    function fileNum (num){
+        $('#history-list-tipsNum').html('已全部加载,共'+ num + '个')
+    }
 
     let allA = document.getElementsByTagName("a");
     let Input = document.getElementsByTagName("input");

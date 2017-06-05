@@ -11,6 +11,7 @@
     bottom: 0px;
     left: 0px;
     padding-top: 10px;
+    min-height:500px;
 }
 
 .frame-left .module-aside {
@@ -157,8 +158,9 @@
     border-radius: 5px 5px 0 0;
     background-color: #fff;
     overflow: hidden;
-    height: 100%:
-
+    height: 100%;
+    min-width:1115px;
+    min-height:600px;
 }
 
 .frame-main .module-toolbar {
@@ -605,10 +607,13 @@
 .frame-main .grid-view-container .module-grid-view,
 .frame-main .grid-view-container .grid-view {
     width: 100%;
+
 }
+
 
 .frame-main .grid-view-container {
     display: none;
+    min-height:500px;
 }
 
 .frame-main .grid-view-container .grid-view dd {
@@ -751,6 +756,7 @@
 
 .frame-main .list-view-container {
     display: none;
+    min-height:500px;
 }
 
 .frame-main .list-view dd {
@@ -989,7 +995,7 @@
     width: 488px;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 60%;
     text-align: center;
     margin: -190px 0 0 -244px;
 }

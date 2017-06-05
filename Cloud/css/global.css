@@ -16,6 +16,7 @@
     right: 0;
     height: 62px;
     background-color: #eff4f8;
+    min-width: 1318px;
 }
 
 .frame-menu .top-menu {

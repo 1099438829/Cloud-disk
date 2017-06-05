@@ -2,7 +2,7 @@
  * Created by zuo on 2017/5/6.
  */
 (function ($) {
-    console.log()
+
     class Message extends $.Drag {
         constructor(options) {
             super();
@@ -19,7 +19,8 @@
                 },
                 cancelFun: function () {
                     console.log('取消了')
-                    this.dialog.remove()
+                    this.dialog.remove();
+                    $('#module-shade').css({display:'none'});
                 }
             }
             $.extend(true, this.newOptions, options);
@@ -28,6 +29,7 @@
         }
 
         _init() {
+            $('#module-shade').css({display:'block'});
             this.dialog = this._createDialog();
             this.dialogBody = this.dialog.find('.dialog-body');
             this.dialog.appendTo('body');
